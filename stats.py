@@ -12,3 +12,4 @@ class Ststs():
         """ Изменение статистики во время игры """
         self.guns_left = 2
         self.score = 0
+        self.game_over = "GAME OVER"

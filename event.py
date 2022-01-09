@@ -50,19 +50,19 @@ def update_bullets(screen, stats, sc, inos, bullets):
         bullets.empty() #удаляем все пули
         create_army(screen, inos) #создаем новую армию
 
-def update_inos(stats, screen, sc, gun, inos, bullets):
+def update_inos(stats, bg_color, screen, sc, gun, inos, bullets):
     """ Обновление позиции пришельцев"""
     inos.update()
     if pygame.sprite.spritecollideany(gun, inos):
-        gun_kill(stats, screen, sc, gun, inos, bullets)
-    inos_check(stats, screen, sc, gun, inos, bullets)
+        gun_kill(stats, bg_color, screen, sc, gun, inos, bullets)
+    inos_check(stats, bg_color, screen, sc, gun, inos, bullets)
 
-def inos_check(stats, screen, sc, gun, inos, bullets):
+def inos_check(stats, bg_color, screen, sc, gun, inos, bullets):
     """ Проверка добралась ли армия до края экрана"""
     screen_rect = screen.get_rect()
     for ino in inos.sprites():
         if ino.rect.bottom >= screen_rect.bottom: #если нижняя позиция приш. больше позиции экрана
-            gun_kill(stats, screen, sc, gun, inos, bullets)
+            gun_kill(stats, bg_color, screen, sc, gun, inos, bullets)
             break
 
 def create_army(screen, inos):
@@ -80,7 +80,7 @@ def create_army(screen, inos):
             ino.rect.y = ino.rect.height + (ino.rect.height * row_number)
             inos.add(ino) #добавление в группу
 
-def gun_kill(stats, screen, sc, gun, inos, bullets):
+def gun_kill(stats, bg_color, screen, sc, gun, inos, bullets):
     """ Пришельцы достигли пушки """
     if stats.guns_left > 0:
         stats.guns_left -= 1 #удаляем жизнь
@@ -92,6 +92,8 @@ def gun_kill(stats, screen, sc, gun, inos, bullets):
         time.sleep(1) #время перезагрузки
     else:
         stats.run_game = False
+        update_game_over(bg_color, screen, sc, gun)
+        time.sleep(2)
         sys.exit() # выход из игры
 
 def check_max_score(stats,  sc):
@@ -101,3 +103,11 @@ def check_max_score(stats,  sc):
         sc.image_max_score() #отрисовываем рекорд
         with open('max_score', 'w') as fill:
             fill.write(str(stats.max_score)) #запись рекорда в фаил
+
+def update_game_over(bg_color, screen, sc, gun):
+    """ Обновление экрана """
+    screen.fill(bg_color) #фон экрана
+    sc.show_score() #отрисовываем счет
+    sc.show_score_gameOver()
+    gun.output() #отрисовка пушки
+    pygame.display.flip()

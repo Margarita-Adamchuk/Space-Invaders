@@ -24,7 +24,6 @@ def run():
             gun.update_gun() #обновляет позицию пушки
             event.update(bg_color, screen, stats, sc, gun, inos, bullets)
             event.update_bullets(screen, stats, sc, inos, bullets)
-            event.update_inos(stats, screen, sc, gun, inos, bullets)
-
+            event.update_inos(stats, bg_color, screen, sc, gun, inos, bullets)
 
 run()

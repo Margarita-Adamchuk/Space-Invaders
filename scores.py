@@ -12,9 +12,11 @@ class Scores():
         self.stats = stats
         self.text_color = (76, 175, 79) #цвет шрифта
         self.font = pygame.font.SysFont(None, 38) #вид шрифта и размер
+        self.font_game_over = pygame.font.SysFont(None, 150)
         self.image_score()
         self.image_max_score()
         self.image_lifs()
+        self.gameOver()
 
     def image_score(self):
         """ Преобразовывает текст счета в графтческое изображение """
@@ -39,9 +41,21 @@ class Scores():
             life.rect.y = 10
             self.lifs.add(life)
 
+    def gameOver(self):
+        """ надпись при проигрыше """
+        self.gameOver_image = self.font_game_over.render(str(self.stats.game_over), True, self.text_color, (0, 0, 0))
+        self.gameOver_rect = self.gameOver_image.get_rect()
+        self.gameOver_rect.centerx = self.screen_rect.centerx  # находиться по центру
+        self.gameOver_rect.top = self.screen_rect.top + 200
+
+
     def show_score(self):
         """ Отрисовываем счет на экране """
         self.screen.blit(self.score_img, self.score_rect) #отрисовываем текущий счет
         self.screen.blit(self.max_score_image, self.max_score_rect)
         self.lifs.draw(self.screen)
+
+    def show_score_gameOver(self):
+        """ Оирсовка последней надписи """
+        self.screen.blit(self.gameOver_image, self.gameOver_rect)
 
